@@ -1054,7 +1054,13 @@ else:
 
                     # ===== DISPLAY TABLE =====
                     df = pd.DataFrame(df)
-                    df = df.applymap(lambda x: str(x))
+
+                    # flatten semua isi dataframe jadi string bersih
+                    for col in df.columns:
+                        df[col] = df[col].apply(
+                            lambda x: ", ".join(map(str, x)) if isinstance(x, list) else str(x)
+                        )
+
                     st.dataframe(df, use_container_width=True)
 
                     st.markdown("""
