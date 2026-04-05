@@ -1061,7 +1061,7 @@ else:
                             lambda x: ", ".join(map(str, x)) if isinstance(x, list) else str(x)
                         )
 
-                    st.dataframe(df.to_dict(orient="records"), use_container_width=True)
+                    st.write(df)
 
                     st.markdown("""
                     ### Analysis
