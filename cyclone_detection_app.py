@@ -1053,6 +1053,7 @@ else:
                     df = pd.DataFrame(data)
 
                     # ===== DISPLAY TABLE =====
+                    df = df.astype(str)
                     st.dataframe(df, width='stretch')
 
                     st.markdown("""
