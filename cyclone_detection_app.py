@@ -1053,8 +1053,9 @@ else:
                     df = pd.DataFrame(data)
 
                     # ===== DISPLAY TABLE =====
-                    df = df.astype(str)
-                    st.dataframe(df, width='stretch')
+                    df = pd.DataFrame(df)
+                    df = df.applymap(lambda x: str(x))
+                    st.dataframe(df, use_container_width=True)
 
                     st.markdown("""
                     ### Analysis
