@@ -39,7 +39,7 @@ if "component_value" not in st.session_state:
 
 if "uploaded" not in st.session_state:
     st.session_state.uploaded = None
-    
+
 # ── Custom CSS ──
 st.markdown("""
 <style>
@@ -674,13 +674,18 @@ if st.session_state.loading:
             unsafe_allow_html=True
         )
 
-    # ⏳ tampilkan dulu
+    # tampilkan dulu
     if not st.session_state.processing:
         st.session_state.processing = True
         st.rerun()   #  tampilkan UI dulu
         st.stop()
 
-    # ⚙️ proses baru jalan
+    # proses baru jalan
+    if st.session_state.uploaded is None:
+        st.error("No image found. Please upload again.")
+        st.session_state.page = "home"
+        st.stop()
+
     image = Image.open(st.session_state.uploaded).convert("RGB")
     img_np = np.array(image)
 
@@ -1241,14 +1246,19 @@ else:
             #     label_visibility="collapsed",
             #     key="main_uploader"
             # )
-            uploaded = st.file_uploader(
+            uploaded_file = st.file_uploader(
                 "Upload PNG image",
                 type=["png"],
                 label_visibility="collapsed",
                 key="main_uploader"
             )
 
+            # 🔥 SIMPAN LANGSUNG SAAT ADA FILE
+            if uploaded_file is not None:
+                st.session_state.uploaded = uploaded_file
+
             # simpan ke session_state kalau ada file
+            uploaded = st.session_state.get("uploaded", None)
             if uploaded is not None:
                 st.session_state.uploaded = uploaded
 
@@ -1284,7 +1294,9 @@ else:
 
             # 🔥 FIX BUTTON → TRIGGER LOADING
             if st.button(" Detect Cyclone", key="detect_btn"):
-
+                if uploaded is None:
+                    st.error("Please upload an image first!")
+                    st.stop()
                 # simpan dulu data
                 st.session_state.uploaded = uploaded
                 st.session_state.selected_date = selected_date
