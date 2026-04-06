@@ -1052,18 +1052,17 @@ else:
 
                     df = pd.DataFrame(data)
 
-                    # ===== DISPLAY TABLE =====
-                    df = pd.DataFrame(df)
+                    # 🔥 WAJIB: force semua jadi string dari awal
+                    df = df.astype(str)
 
-                    # flatten semua isi dataframe jadi string bersih
-                    for col in df.columns:
-                        df[col] = df[col].apply(
-                            lambda x: ", ".join(map(str, x)) 
-                            if isinstance(x, (list, tuple, np.ndarray)) 
-                            else str(x)
-                        )
+                    # OPTIONAL: kalau mau clean list juga
+                    def clean(x):
+                        if isinstance(x, (list, tuple, np.ndarray)):
+                            return ", ".join(map(str, x))
+                        return str(x)
 
-                    st.write(df)
+                    df = df.applymap(clean)
+                    st.dataframe(df, use_container_width=True)
 
                     st.markdown("""
                     ### Analysis
