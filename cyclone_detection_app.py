@@ -1232,7 +1232,19 @@ else:
                 key="main_uploader"
             )
 
-            uploaded = st.session_state.uploaded
+            uploaded = st.file_uploader(
+                "Upload PNG image",
+                type=["png"],
+                label_visibility="collapsed",
+                key="main_uploader"
+            )
+
+            # 🔥 SIMPAN KE SESSION STATE
+            if uploaded is not None:
+                st.session_state.uploaded = uploaded
+
+            # 🔥 AMBIL DARI SESSION STATE
+            uploaded = st.session_state.get("uploaded", None)
 
             st.markdown("<br>", unsafe_allow_html=True)
 
@@ -1251,6 +1263,8 @@ else:
                 st.success("File detected")
             else:
                 st.error("File NOT detected")
+            
+            st.write("SESSION:", st.session_state.get("uploaded"))
 
             # 🔥 FIX BUTTON → TRIGGER LOADING
             if st.button(" Detect Cyclone", key="detect_btn"):
