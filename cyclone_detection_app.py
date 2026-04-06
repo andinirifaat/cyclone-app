@@ -11,6 +11,7 @@ from streamlit_lottie import st_lottie
 import json
 import streamlit.components.v1 as components
 import os
+import matplotlib.pyplot as plt
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
@@ -1051,18 +1052,24 @@ else:
                     }
 
                     df = pd.DataFrame(data)
-
-                    # 🔥 WAJIB: force semua jadi string dari awal
                     df = df.astype(str)
+                    # ===== TABLE VISUAL (ANTI PYARROW) =====
+                    fig, ax = plt.subplots(figsize=(8, 3))
+                    ax.axis('off')
 
-                    # OPTIONAL: kalau mau clean list juga
-                    def clean(x):
-                        if isinstance(x, (list, tuple, np.ndarray)):
-                            return ", ".join(map(str, x))
-                        return str(x)
+                    table = ax.table(
+                        cellText=df.values,
+                        colLabels=df.columns,
+                        loc='center'
+                    )
 
-                    df = df.applymap(clean)
-                    st.dataframe(df, use_container_width=True)
+                    table.auto_set_font_size(False)
+                    table.set_fontsize(10)
+                    table.auto_set_column_width(col=list(range(len(df.columns))))
+                    table.scale(1, 1.5)
+                    fig, ax = plt.subplots(figsize=(10, 3))
+
+                    st.pyplot(fig)
 
                     st.markdown("""
                     ### Analysis
