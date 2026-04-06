@@ -891,72 +891,72 @@ else:
             with open(lottie_path, "r") as f:
                 lottie_json = f.read()
 
-            components.html(f"""
-            <div style="
-                background:white;
-                border-radius:18px;
-                padding:18px;
-                border:1px solid #E0F2FE;
-                text-align:center;
-                transition: all 0.25s ease;
-            "
-            onmouseover="
-                this.style.transform='translateY(-6px)';
-                this.style.boxShadow='0 0 30px rgba(56,189,248,0.7)';
-            "
-            onmouseout="
-                this.style.transform='none';
-                this.style.boxShadow='none';
-            "
-            >
+            # components.html(f"""
+            # <div style="
+            #     background:white;
+            #     border-radius:18px;
+            #     padding:18px;
+            #     border:1px solid #E0F2FE;
+            #     text-align:center;
+            #     transition: all 0.25s ease;
+            # "
+            # onmouseover="
+            #     this.style.transform='translateY(-6px)';
+            #     this.style.boxShadow='0 0 30px rgba(56,189,248,0.7)';
+            # "
+            # onmouseout="
+            #     this.style.transform='none';
+            #     this.style.boxShadow='none';
+            # "
+            # >
 
-                <div style="
-                    width:32px;height:32px;
-                    border-radius:50%;
-                    background:linear-gradient(135deg,#0284C7,#38BDF8);
-                    color:white;
-                    font-weight:bold;
-                    display:flex;
-                    align-items:center;
-                    justify-content:center;
-                    font-size:12px;
-                    margin:0 auto 10px auto;
-                ">
-                    {num}
-                </div>
+            #     <div style="
+            #         width:32px;height:32px;
+            #         border-radius:50%;
+            #         background:linear-gradient(135deg,#0284C7,#38BDF8);
+            #         color:white;
+            #         font-weight:bold;
+            #         display:flex;
+            #         align-items:center;
+            #         justify-content:center;
+            #         font-size:12px;
+            #         margin:0 auto 10px auto;
+            #     ">
+            #         {num}
+            #     </div>
 
-                <div style="
-                    font-weight:700;
-                    font-size:18px;
-                    color:#0F2A44;
-                    margin-bottom:10px;
-                ">
-                    {title}
-                </div>
+            #     <div style="
+            #         font-weight:700;
+            #         font-size:18px;
+            #         color:#0F2A44;
+            #         margin-bottom:10px;
+            #     ">
+            #         {title}
+            #     </div>
 
-                <div id="lottie-{key}" style="height:110px;"></div>
+            #     <div id="lottie-{key}" style="height:110px;"></div>
 
-                <div style="
-                    font-size:14px;
-                    color:#64748B;
-                    margin-top:10px;
-                ">
-                    {desc}
-                </div>
+            #     <div style="
+            #         font-size:14px;
+            #         color:#64748B;
+            #         margin-top:10px;
+            #     ">
+            #         {desc}
+            #     </div>
 
-            </div>
+            # </div>
 
-            <script src="https://unpkg.com/lottie-web@5.10.2/build/player/lottie.min.js"></script>
-            <script>
-            lottie.loadAnimation({{
-                container: document.getElementById("lottie-{key}"),
-                renderer: 'svg',
-                loop: true,
-                autoplay: true,
-                animationData: {lottie_json}
-            }});
-            </script>
-            """, height=300)
+            # <script src="https://unpkg.com/lottie-web@5.10.2/build/player/lottie.min.js"></script>
+            # <script>
+            # lottie.loadAnimation({{
+            #     container: document.getElementById("lottie-{key}"),
+            #     renderer: 'svg',
+            #     loop: true,
+            #     autoplay: true,
+            #     animationData: {lottie_json}
+            # }});
+            # </script>
+            # """, height=300)
 
             # ===== POPOVER =====
             with st.popover("Details", width="stretch"):
