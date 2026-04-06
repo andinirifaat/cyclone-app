@@ -1058,7 +1058,9 @@ else:
                     # flatten semua isi dataframe jadi string bersih
                     for col in df.columns:
                         df[col] = df[col].apply(
-                            lambda x: ", ".join(map(str, x)) if isinstance(x, list) else str(x)
+                            lambda x: ", ".join(map(str, x)) 
+                            if isinstance(x, (list, tuple, np.ndarray)) 
+                            else str(x)
                         )
 
                     st.write(df)
