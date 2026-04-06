@@ -1054,20 +1054,22 @@ else:
                     df = pd.DataFrame(data)
                     df = df.astype(str)
                     # ===== TABLE VISUAL (ANTI PYARROW) =====
-                    fig, ax = plt.subplots(figsize=(8, 3))
+                 
+                    fig, ax = plt.subplots(figsize=(12, 2))  # 🔥 lebih lebar & pendek
+                    ax.axis('tight')   # 🔥 penting!
                     ax.axis('off')
 
                     table = ax.table(
-                        cellText=df.values,
-                        colLabels=df.columns,
+                        cellText=df.values.tolist(),   # 🔥 pastikan list
+                        colLabels=df.columns.tolist(),
                         loc='center'
                     )
 
                     table.auto_set_font_size(False)
                     table.set_fontsize(10)
-                    table.auto_set_column_width(col=list(range(len(df.columns))))
-                    table.scale(1, 1.5)
-                    fig, ax = plt.subplots(figsize=(10, 3))
+                    table.scale(1, 1.8)
+
+                    plt.tight_layout()  # 🔥 WAJIB
 
                     st.pyplot(fig)
 
