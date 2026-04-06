@@ -37,6 +37,9 @@ if "modal" not in st.session_state:
 if "component_value" not in st.session_state:
     st.session_state.component_value = None
 
+if "uploaded" not in st.session_state:
+    st.session_state.uploaded = None
+    
 # ── Custom CSS ──
 st.markdown("""
 <style>
@@ -1225,19 +1228,32 @@ else:
             #     label_visibility="collapsed",
             #     key="main_uploader"
             # )
-            st.session_state.uploaded = st.file_uploader(
-                "Upload PNG image",
-                type=["png"],
-                label_visibility="collapsed",
-                key="main_uploader"
-            )
+            # st.session_state.uploaded = st.file_uploader(
+            #     "Upload PNG image",
+            #     type=["png"],
+            #     label_visibility="collapsed",
+            #     key="main_uploader"
+            # )
 
+            # uploaded = st.file_uploader(
+            #     "Upload PNG image",
+            #     type=["png"],
+            #     label_visibility="collapsed",
+            #     key="main_uploader"
+            # )
             uploaded = st.file_uploader(
                 "Upload PNG image",
                 type=["png"],
                 label_visibility="collapsed",
                 key="main_uploader"
             )
+
+            # simpan ke session_state kalau ada file
+            if uploaded is not None:
+                st.session_state.uploaded = uploaded
+
+            # ambil dari session_state
+            uploaded = st.session_state.get("uploaded", None)
 
             # 🔥 SIMPAN KE SESSION STATE
             if uploaded is not None:
