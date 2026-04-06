@@ -575,7 +575,45 @@ button[data-baseweb="tab"][aria-selected="true"] {
     color: #0284C7;
     border-bottom: 2px solid #0284C7;
 }
-                    
+            /* 🔥 FIX FILE UPLOADER TEXT */
+div[data-testid="stFileUploader"] * {
+    color: #0F2A44 !important;
+}
+
+/* filename */
+div[data-testid="stFileUploader"] span {
+    color: #0F2A44 !important;
+    font-weight: 500;
+}
+
+/* 🔥 FIX DATE INPUT BACKGROUND */
+div[data-testid="stDateInput"] {
+    background-color: #FFFFFF !important;
+    border-radius: 12px !important;
+}
+
+/* input box */
+div[data-testid="stDateInput"] input {
+    background-color: #FFFFFF !important;
+    color: #0F2A44 !important;
+    border-radius: 12px !important;
+    font-weight: 500;
+}
+
+/* calendar icon */
+div[data-testid="stDateInput"] svg {
+    fill: #0F2A44 !important;
+}
+            
+/* force semua input */
+input {
+    background-color: #FFFFFF !important;
+    color: #0F2A44 !important;
+}
+div[data-testid="stDateInput"] {
+    box-shadow: 0 4px 12px rgba(15,42,68,0.08);
+}
+                              
 </style>
 """, unsafe_allow_html=True)
 
@@ -1181,12 +1219,20 @@ else:
         with st.container():
 
             st.markdown('<div class="input-label"> Satellite Image (PNG)</div>', unsafe_allow_html=True)
-            uploaded = st.file_uploader(
+            # uploaded = st.file_uploader(
+            #     "Upload PNG image",
+            #     type=["png"],
+            #     label_visibility="collapsed",
+            #     key="main_uploader"
+            # )
+            st.session_state.uploaded = st.file_uploader(
                 "Upload PNG image",
                 type=["png"],
                 label_visibility="collapsed",
                 key="main_uploader"
             )
+
+            uploaded = st.session_state.uploaded
 
             st.markdown("<br>", unsafe_allow_html=True)
 
@@ -1201,9 +1247,13 @@ else:
             st.session_state.selected_date = selected_date
 
             st.markdown("<br>", unsafe_allow_html=True)
+            if uploaded:
+                st.success("File detected")
+            else:
+                st.error("File NOT detected")
 
             # 🔥 FIX BUTTON → TRIGGER LOADING
-            if st.button(" Detect Cyclone", disabled=uploaded is None, key="detect_btn"):
+            if st.button(" Detect Cyclone", key="detect_btn"):
 
                 # simpan dulu data
                 st.session_state.uploaded = uploaded
