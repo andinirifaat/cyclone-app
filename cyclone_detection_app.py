@@ -1246,20 +1246,15 @@ else:
             uploaded_file = st.file_uploader(
                 "Upload PNG image",
                 type=["png"],
-                label_visibility="collapsed",
                 key="uploader"
             )
 
-            if uploaded_file is not None and st.session_state.uploaded_bytes is None :
-                # simpan bytes (INI KUNCI UTAMA)
-                st.session_state.uploaded_bytes = uploaded_file.read()
+            # 🔥 SIMPAN SEKALI DAN AMAN
+            if uploaded_file is not None:
+                file_bytes = uploaded_file.getvalue()   # ⬅️ BUKAN read()
 
-            # status
-            has_file = st.session_state.get("uploaded_bytes") is not None
-            if has_file:
-                st.success("Successfully Image uploaded")
-            else:
-                st.error("File NOT detected - Please upload an image")
+                if file_bytes:  # pastikan tidak kosong
+                    st.session_state.uploaded_bytes = file_bytes
 
             st.markdown('<div class="input-label"> Capture Date</div>', unsafe_allow_html=True)
             selected_date = st.datetime_input(
