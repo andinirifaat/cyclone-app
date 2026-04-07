@@ -32,11 +32,6 @@ def get_model():
 
 model = get_model()
 
-st.header("TEST UPLOADER")
-
-test_file = st.file_uploader("TEST UPLOAD")
-
-st.write("TEST RESULT:", test_file)
 
 # ── Custom CSS ──
 st.markdown("""
@@ -646,20 +641,20 @@ def set_footer():
     """, unsafe_allow_html=True)
 
 # ── State ──
-if "page" not in st.session_state:
-    st.session_state.page = "home"
+# if "page" not in st.session_state:
+#     st.session_state.page = "home"
 # if "uploaded" not in st.session_state:
 #     st.session_state.uploaded = None
-if "loading" not in st.session_state:
-    st.session_state.loading = False
-if "processing" not in st.session_state:
-    st.session_state.processing = False
+# if "loading" not in st.session_state:
+#     st.session_state.loading = False
+# if "processing" not in st.session_state:
+#     st.session_state.processing = False
 
 # if "modal" not in st.session_state:
 #     st.session_state.modal = None
 
-if "component_value" not in st.session_state:
-    st.session_state.component_value = None
+# if "component_value" not in st.session_state:
+#     st.session_state.component_value = None
 
 if "uploaded_bytes" not in st.session_state:
     st.session_state.uploaded_bytes = None
@@ -698,7 +693,7 @@ if st.session_state.page == "loading":
 # ══════════════════════════════════════
 # PAGE: RESULT
 # ══════════════════════════════════════
-elif st.session_state.page == "result":
+if st.session_state.result is not None:
     result = st.session_state.result
     # Header
     st.markdown("""
@@ -1264,13 +1259,13 @@ with col_center:
         #     st.session_state.uploaded_bytes = uploaded_file.getvalue()
         #     st.session_state.uploaded_filename = uploaded_file.name
 
-        # # status
-        # has_file = st.session_state.get("uploaded_bytes") is not None
-        # if has_file:
-        #     fname = st.session_state.get("uploaded_filename", "image.png")
-        #     st.success(f"✅ File terdeteksi: **{fname}**")
-        # else:
-        #     st.error("File NOT detected - Please upload an image")
+        # status
+        has_file = st.session_state.get("uploaded_bytes") is not None
+        if has_file:
+            fname = st.session_state.get("uploaded_filename", "image.png")
+            st.success(f"File successfully uploaded: **{fname}**")
+        else:
+            st.error("File NOT detected - Please upload an image")
 
         st.markdown('<div class="input-label"> Capture Date</div>', unsafe_allow_html=True)
         selected_date = st.datetime_input(
@@ -1296,11 +1291,21 @@ with col_center:
         #     st.session_state.page = "loading"
         #     st.rerun()
         if st.button("Detect Cyclone"):
-            if st.session_state.get("uploaded_bytes") is None:
-                st.error("File belum ada!")
-            else:
-                st.success("READY DIPROSES - Starting analysis...")
+            if not has_file:
+                st.error("Upload dulu!")
+                st.stop()
+            with st.spinner("Analyzing cyclone... 🌪️"):
+                image = Image.open(BytesIO(st.session_state.uploaded_bytes)).convert("RGB")
+                img_np = np.array(image)
 
+                mask, boxes, overlay = run_inference(model, img_np)
+
+            st.session_state.result = {
+                "image": image,
+                "mask": mask,
+                "boxes": boxes,
+                "overlay": overlay
+            }
 st.markdown("<div style='height:80px'></div>", unsafe_allow_html=True)
 set_footer()
 
