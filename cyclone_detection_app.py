@@ -1246,23 +1246,27 @@ with col_center:
         #     key="main_uploader"
         # )
         uploaded_file = st.file_uploader(
-            "Upload PNG image",
             type=["png"],
             key="uploader"
         )
+        # DEBUG (WAJIB SEMENTARA)
+        st.write("UPLOADED FILE:", uploaded_file)
 
-        # 🔥 SIMPAN SETIAP ADA FILE (INI PALING STABIL)
         if uploaded_file is not None:
-            st.session_state.uploaded_bytes = uploaded_file.getvalue()
-            st.session_state.uploaded_filename = uploaded_file.name
+            file_bytes = uploaded_file.getvalue()
+            st.session_state.uploaded_bytes = file_bytes
+        # # 🔥 SIMPAN SETIAP ADA FILE (INI PALING STABIL)
+        # if uploaded_file is not None:
+        #     st.session_state.uploaded_bytes = uploaded_file.getvalue()
+        #     st.session_state.uploaded_filename = uploaded_file.name
 
-        # status
-        has_file = st.session_state.get("uploaded_bytes") is not None
-        if has_file:
-            fname = st.session_state.get("uploaded_filename", "image.png")
-            st.success(f"✅ File terdeteksi: **{fname}**")
-        else:
-            st.error("File NOT detected - Please upload an image")
+        # # status
+        # has_file = st.session_state.get("uploaded_bytes") is not None
+        # if has_file:
+        #     fname = st.session_state.get("uploaded_filename", "image.png")
+        #     st.success(f"✅ File terdeteksi: **{fname}**")
+        # else:
+        #     st.error("File NOT detected - Please upload an image")
 
         st.markdown('<div class="input-label"> Capture Date</div>', unsafe_allow_html=True)
         selected_date = st.datetime_input(
@@ -1277,7 +1281,7 @@ with col_center:
         st.markdown("<br>", unsafe_allow_html=True)
                     
         st.write("SESSION:", "OK" if st.session_state.get("uploaded_bytes") else None)
-        st.write("BYTES:", type(st.session_state.uploaded_bytes))
+        st.write("BYTES:", st.session_state.get("uploaded_bytes"))
 
         # 🔥 FIX BUTTON → TRIGGER LOADING
         if st.button(" Detect Cyclone"):
