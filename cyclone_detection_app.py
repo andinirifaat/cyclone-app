@@ -665,30 +665,30 @@ if "result" not in st.session_state:
 # ══════════════════════════════════════
 # PAGE: LOADING PAGE
 # ══════════════════════════════════════
-if st.session_state.page == "loading":
-    st.markdown("## 🔄 Analyzing Cyclone...")
+# if st.session_state.page == "loading":
+#     st.markdown("## 🔄 Analyzing Cyclone...")
 
-    # animasi (opsional)
-    time.sleep(0.5)
+#     # animasi (opsional)
+#     time.sleep(0.5)
 
-    # ambil bytes → convert ke image
-    image = Image.open(BytesIO(st.session_state.uploaded_bytes)).convert("RGB")
-    img_np = np.array(image)
+#     # ambil bytes → convert ke image
+#     image = Image.open(BytesIO(st.session_state.uploaded_bytes)).convert("RGB")
+#     img_np = np.array(image)
 
-    # inference
-    mask, boxes, overlay = run_inference(model, img_np)
+#     # inference
+#     mask, boxes, overlay = run_inference(model, img_np)
 
-    # simpan hasil
-    st.session_state.result = {
-        "image": image,
-        "mask": mask,
-        "boxes": boxes,
-        "overlay": overlay
-    }
+#     # simpan hasil
+#     st.session_state.result = {
+#         "image": image,
+#         "mask": mask,
+#         "boxes": boxes,
+#         "overlay": overlay
+#     }
 
-    # pindah ke result
-    st.session_state.page = "result"
-    st.rerun()
+#     # pindah ke result
+#     st.session_state.page = "result"
+#     st.rerun()
 
 # ══════════════════════════════════════
 # PAGE: RESULT
@@ -708,7 +708,7 @@ if st.session_state.result is not None:
         st.session_state.result = None
         st.session_state.uploaded_bytes = None
         st.session_state.uploaded_filename = None
-        st.rerun()
+        #st.rerun()
 
     # Image tabs
     img = st.session_state.result["image"]
@@ -1250,8 +1250,8 @@ with col_center:
         st.write("UPLOADED FILE:", uploaded_file)
 
         if uploaded_file is not None:
-            file_bytes = uploaded_file.getvalue()
-            st.session_state.uploaded_bytes = file_bytes
+            st.session_state.uploaded_bytes = uploaded_file.getvalue()
+            st.session_state.uploaded_filename = uploaded_file.name
         
         
         # # 🔥 SIMPAN SETIAP ADA FILE (INI PALING STABIL)
@@ -1260,7 +1260,7 @@ with col_center:
         #     st.session_state.uploaded_filename = uploaded_file.name
 
         # status
-        has_file = st.session_state.get("uploaded_bytes") is not None
+        has_file = st.session_state.get("uploaded_bytes") not in [None, b""]
         if has_file:
             fname = st.session_state.get("uploaded_filename", "image.png")
             st.success(f"File successfully uploaded: **{fname}**")
