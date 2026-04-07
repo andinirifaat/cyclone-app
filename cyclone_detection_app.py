@@ -1285,14 +1285,19 @@ with col_center:
         st.write("SESSION:", "OK" if st.session_state.get("uploaded_bytes") else None)
         st.write("BYTES:", st.session_state.get("uploaded_bytes"))
 
-        # 🔥 FIX BUTTON → TRIGGER LOADING
-        if st.button(" Detect Cyclone"):
-            if st.session_state.uploaded_bytes is None:
-                st.error("Please upload an image first!")
-                st.stop()
+        # # 🔥 FIX BUTTON → TRIGGER LOADING
+        # if st.button(" Detect Cyclone"):
+        #     if st.session_state.uploaded_bytes is None:
+        #         st.error("Please upload an image first!")
+        #         st.stop()
 
-            st.session_state.page = "loading"
-            st.rerun()
+        #     st.session_state.page = "loading"
+        #     st.rerun()
+        if st.button("Detect Cyclone"):
+            if st.session_state.get("uploaded_bytes") is None:
+                st.error("File belum ada!")
+            else:
+                st.success("READY DIPROSES - Starting analysis...")
 
 st.markdown("<div style='height:80px'></div>", unsafe_allow_html=True)
 set_footer()
