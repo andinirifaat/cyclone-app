@@ -32,22 +32,6 @@ def get_model():
 
 model = get_model()
 
-if "modal" not in st.session_state:
-    st.session_state.modal = None
-
-if "component_value" not in st.session_state:
-    st.session_state.component_value = None
-
-# if "uploaded" not in st.session_state:
-#     st.session_state.uploaded = None
-if "page" not in st.session_state:
-    st.session_state.page = "home"
-
-if "uploaded_bytes" not in st.session_state:
-    st.session_state.uploaded_bytes = None
-
-if "result" not in st.session_state:
-    st.session_state.result = None
 
 # ── Custom CSS ──
 st.markdown("""
@@ -671,6 +655,18 @@ if "loading" not in st.session_state:
 if "processing" not in st.session_state:
     st.session_state.processing = False
 
+if "modal" not in st.session_state:
+    st.session_state.modal = None
+
+if "component_value" not in st.session_state:
+    st.session_state.component_value = None
+
+if "uploaded_bytes" not in st.session_state:
+    st.session_state.uploaded_bytes = None
+
+if "result" not in st.session_state:
+    st.session_state.result = None
+
 # ══════════════════════════════════════
 # PAGE: LOADING PAGE
 # ══════════════════════════════════════
@@ -1250,19 +1246,20 @@ else:
             uploaded_file = st.file_uploader(
                 "Upload PNG image",
                 type=["png"],
-                label_visibility="collapsed"
+                label_visibility="collapsed",
+                key="uploader"
             )
 
-            if uploaded_file is not None:
+            if uploaded_file is not None and st.session_state.uploaded_bytes is None :
                 # simpan bytes (INI KUNCI UTAMA)
                 st.session_state.uploaded_bytes = uploaded_file.read()
 
             # status
             has_file = st.session_state.get("uploaded_bytes") is not None
             if has_file:
-                st.success("File detected ✅")
+                st.success("Successfully Image uploaded")
             else:
-                st.error("File NOT detected ❌")
+                st.error("File NOT detected - Please upload an image")
 
             st.markdown('<div class="input-label"> Capture Date</div>', unsafe_allow_html=True)
             selected_date = st.datetime_input(
