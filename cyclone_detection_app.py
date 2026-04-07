@@ -1246,6 +1246,8 @@ with col_center:
         #     key="main_uploader"
         # )
         uploaded_file = st.file_uploader(
+            "Upload PNG image",
+            label_visibility="collapsed",
             type=["png"],
             key="uploader"
         )
