@@ -85,9 +85,10 @@ html, body, [class*="css"]  {
 }
 
 /* ===== FIX HITAM (PENTING BANGET) ===== */
-.stFileUploader,
-.stFileUploader * {
+/* hanya styling container, bukan semua child */
+div[data-testid="stFileUploader"] {
     background-color: #FFFFFF !important;
+    border-radius: 12px;
 }
 
 .stDateInput,
