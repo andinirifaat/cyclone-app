@@ -796,7 +796,7 @@ if st.session_state.page == "result":
 
         if boxes:
             indo, eng = interpret_boxes(
-                st.session_state.boxes,
+                result["boxes"],
                 result["overlay"].shape,
                 st.session_state.get("selected_date", None)
             )
