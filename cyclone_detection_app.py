@@ -12,6 +12,7 @@ import json
 import streamlit.components.v1 as components
 import os
 import matplotlib.pyplot as plt
+from io import BytesIO
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
@@ -37,8 +38,16 @@ if "modal" not in st.session_state:
 if "component_value" not in st.session_state:
     st.session_state.component_value = None
 
-if "uploaded" not in st.session_state:
-    st.session_state.uploaded = None
+# if "uploaded" not in st.session_state:
+#     st.session_state.uploaded = None
+if "page" not in st.session_state:
+    st.session_state.page = "home"
+
+if "uploaded_bytes" not in st.session_state:
+    st.session_state.uploaded_bytes = None
+
+if "result" not in st.session_state:
+    st.session_state.result = None
 
 # ── Custom CSS ──
 st.markdown("""
@@ -415,55 +424,64 @@ st.markdown("""
 .element-container {
     position: relative;
 }
-/* ===== POPOVER CLEAN BLUE WHITE ===== */
-div[data-testid="stPopover"] {
-    background: linear-gradient(180deg, #F0F9FF, #E0F2FE) !important;
-    border-radius: 18px !important;
-    border: 1px solid #BAE6FD !important;
-    box-shadow: 0 10px 40px rgba(2,132,199,0.25) !important;
-    padding: 18px !important;
+/* ===== POPOVER CENTER + LIGHT THEME ===== */
+
+/* BACKDROP (gelapin background biar fokus) */
+section[role="dialog"]::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background: rgba(15, 42, 68, 0.35);
+    backdrop-filter: blur(4px);
+    z-index: -1;
 }
 
-/* text */
-div[data-testid="stPopover"] * {
+/* CONTAINER UTAMA */
+section[role="dialog"] {
+    position: fixed !important;
+    top: 50% !important;
+    left: 50% !important;
+    transform: translate(-50%, -50%) !important;
+
+    width: 60% !important;
+    max-width: 900px;
+    max-height: 80vh;
+
+    overflow-y: auto;
+
+    background: linear-gradient(180deg, #F0F9FF, #E0F2FE) !important;
+    border-radius: 20px !important;
+    border: 1px solid #BAE6FD !important;
+    box-shadow: 0 20px 60px rgba(2,132,199,0.3) !important;
+
+    padding: 24px !important;
+    z-index: 9999;
+}
+
+/* TEXT */
+section[role="dialog"] * {
     color: #0F2A44 !important;
 }
 
-/* title */
-div[data-testid="stPopover"] h3 {
+/* TITLE */
+section[role="dialog"] h3 {
     color: #0284C7 !important;
     font-weight: 700;
 }
 
-/* divider */
-div[data-testid="stPopover"] hr {
-    border-color: #BAE6FD !important;
+/* IMAGE */
+section[role="dialog"] img {
+    border-radius: 12px;
+    margin: 10px 0;
 }
 
-/* ===== FIX POPOVER FULL ===== */
-
-/* container utama */
-div[data-testid="stPopover"] > div {
-    background: linear-gradient(180deg, #F0F9FF, #E0F2FE) !important;
-    border-radius: 18px !important;
-    border: 1px solid #BAE6FD !important;
-    box-shadow: 0 10px 40px rgba(2,132,199,0.25) !important;
-    padding: 18px !important;
+/* SCROLL SMOOTH */
+section[role="dialog"]::-webkit-scrollbar {
+    width: 6px;
 }
-
-/* text */
-div[data-testid="stPopover"] * {
-    color: #0F2A44 !important;
-}
-
-/* title */
-div[data-testid="stPopover"] h3 {
-    color: #0284C7 !important;
-}
-
-/* scroll area fix */
-section[role="dialog"] {
-    background: transparent !important;
+section[role="dialog"]::-webkit-scrollbar-thumb {
+    background: #94A3B8;
+    border-radius: 10px;
 }
 /* ===== AI INTERPRETATION CARD ===== */
 .ai-card {
@@ -659,51 +677,36 @@ if "processing" not in st.session_state:
 # ══════════════════════════════════════
 # PAGE: LOADING PAGE
 # ══════════════════════════════════════
-if st.session_state.loading:
+if st.session_state.page == "loading":
+    st.markdown("## 🔄 Analyzing Cyclone...")
 
-    col1, col2, col3 = st.columns([1,2,1])
+    # animasi (opsional)
+    time.sleep(0.5)
 
-    with col2:
-        st.markdown("<br><br><br>", unsafe_allow_html=True)
-
-        lottie = load_lottie(os.path.join(BASE_DIR, "assets", "loading.json"))
-        st_lottie(lottie, height=280)
-
-        st.markdown(
-            "<h3 style='text-align:center;color:#0284C7;'>Analyzing Cyclone...</h3>",
-            unsafe_allow_html=True
-        )
-
-    # tampilkan dulu
-    if not st.session_state.processing:
-        st.session_state.processing = True
-        st.rerun()   #  tampilkan UI dulu
-        st.stop()
-
-    # proses baru jalan
-    if st.session_state.uploaded is None:
-        st.error("No image found. Please upload again.")
-        st.session_state.page = "home"
-        st.stop()
-
-    image = Image.open(st.session_state.uploaded).convert("RGB")
+    # ambil bytes → convert ke image
+    image = Image.open(BytesIO(st.session_state.uploaded_bytes)).convert("RGB")
     img_np = np.array(image)
 
+    # inference
     mask, boxes, overlay = run_inference(model, img_np)
 
-    st.session_state.result_mask = mask
-    st.session_state.boxes = boxes
-    st.session_state.result_overlay = overlay
+    # simpan hasil
+    st.session_state.result = {
+        "image": image,
+        "mask": mask,
+        "boxes": boxes,
+        "overlay": overlay
+    }
 
-    st.session_state.loading = False
+    # pindah ke result
     st.session_state.page = "result"
-
     st.rerun()
 
 # ══════════════════════════════════════
 # PAGE: RESULT
 # ══════════════════════════════════════
 if st.session_state.page == "result":
+    result = st.session_state.result
     # Header
     st.markdown("""
     <div class="result-header">
@@ -714,6 +717,7 @@ if st.session_state.page == "result":
 
     if st.button("← Back to Home"):
         st.session_state.page = "home"
+        st.session_state.result = None
         st.rerun()
 
     # Image tabs
@@ -1246,22 +1250,21 @@ else:
             #     label_visibility="collapsed",
             #     key="main_uploader"
             # )
-            uploaded = st.file_uploader(
+            uploaded_file = st.file_uploader(
                 "Upload PNG image",
                 type=["png"],
-                label_visibility="collapsed",
-                key="main_uploader"
+                label_visibility="collapsed"
             )
 
-            # SIMPAN SEKALI SAJA
-            if uploaded is not None:
-                st.session_state.uploaded = uploaded
+            if uploaded_file is not None:
+                # simpan bytes (INI KUNCI UTAMA)
+                st.session_state.uploaded_bytes = uploaded_file.read()
 
-            # AMBIL DARI STATE
-            uploaded = st.session_state.get("uploaded")
-            # FORCE READ FILE (INI KUNCI DI RAILWAY)
-            if uploaded is not None:
-                st.session_state.uploaded_bytes = uploaded.read()
+            # status
+            if st.session_state.uploaded_bytes:
+                st.success("File detected")
+            else:
+                st.error("File NOT detected")
             st.markdown("<br>", unsafe_allow_html=True)
 
             st.markdown('<div class="input-label"> Capture Date</div>', unsafe_allow_html=True)
@@ -1275,7 +1278,8 @@ else:
             st.session_state.selected_date = selected_date
 
             st.markdown("<br>", unsafe_allow_html=True)
-            if uploaded:
+            
+            if st.session_state.uploaded_bytes is not None:
                 st.success("File detected")
             else:
                 st.error("File NOT detected")
@@ -1283,19 +1287,12 @@ else:
             st.write("SESSION:", st.session_state.get("uploaded"))
 
             # 🔥 FIX BUTTON → TRIGGER LOADING
-            if st.button(" Detect Cyclone", key="detect_btn"):
-                if uploaded is None:
+            if st.button(" Detect Cyclone"):
+                if st.session_state.uploaded_bytes is None:
                     st.error("Please upload an image first!")
                     st.stop()
-                # simpan dulu data
-                st.session_state.uploaded = uploaded
-                st.session_state.selected_date = selected_date
 
-                # aktifkan loading mode
-                st.session_state.loading = True
-                st.session_state.processing = False
-
-                # rerun → pindah ke loading screen
+                st.session_state.page = "loading"
                 st.rerun()
 
     st.markdown("<div style='height:80px'></div>", unsafe_allow_html=True)
