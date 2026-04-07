@@ -1251,16 +1251,11 @@ else:
                 key="uploader"
             )
 
-            # 🔥 SIMPAN SEKALI DAN AMAN
-            if uploaded_file is not None and st.session_state.uploaded_bytes is None:
+            # 🔥 SIMPAN SETIAP ADA FILE (INI PALING STABIL)
+            if uploaded_file is not None:
                 st.session_state.uploaded_bytes = uploaded_file.getvalue()
                 st.session_state.uploaded_filename = uploaded_file.name
-            
-            if uploaded_file is not None:
-                file_bytes = uploaded_file.getvalue()
-                if file_bytes != st.session_state.get("uploaded_bytes"):
-                    st.session_state.uploaded_bytes = file_bytes
-                    st.session_state.uploaded_filename = uploaded_file.name
+                
             # status
             has_file = st.session_state.get("uploaded_bytes") is not None
             if has_file:
