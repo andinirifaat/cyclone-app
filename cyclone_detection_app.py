@@ -399,12 +399,6 @@ div[data-testid="stTabs"] {
     background: transparent !important;
 }
 
-</style>
-""", unsafe_allow_html=True)
-
-st.markdown("""
-<style>
-
 /* parent card */
 .element-container {
     position: relative;
@@ -646,6 +640,18 @@ def set_footer():
     </div>
     """, unsafe_allow_html=True)
 
+#── Uploaded staus ──
+uploaded_file = st.file_uploader(
+            "Upload PNG image",
+            label_visibility="collapsed",
+            type=["png"],
+            key="uploader"
+        )
+        
+if uploaded_file is not None:
+    file_bytes = uploaded_file.getvalue()
+    st.session_state.uploaded_bytes = file_bytes
+
 # ── State ──
 if "page" not in st.session_state:
     st.session_state.page = "home"
@@ -656,8 +662,8 @@ if "loading" not in st.session_state:
 if "processing" not in st.session_state:
     st.session_state.processing = False
 
-if "modal" not in st.session_state:
-    st.session_state.modal = None
+# if "modal" not in st.session_state:
+#     st.session_state.modal = None
 
 if "component_value" not in st.session_state:
     st.session_state.component_value = None
@@ -1246,18 +1252,10 @@ with col_center:
         #     label_visibility="collapsed",
         #     key="main_uploader"
         # )
-        uploaded_file = st.file_uploader(
-            "Upload PNG image",
-            label_visibility="collapsed",
-            type=["png"],
-            key="uploader"
-        )
+        
         # DEBUG (WAJIB SEMENTARA)
         st.write("UPLOADED FILE:", uploaded_file)
 
-        if uploaded_file is not None:
-            file_bytes = uploaded_file.getvalue()
-            st.session_state.uploaded_bytes = file_bytes
         # # 🔥 SIMPAN SETIAP ADA FILE (INI PALING STABIL)
         # if uploaded_file is not None:
         #     st.session_state.uploaded_bytes = uploaded_file.getvalue()
