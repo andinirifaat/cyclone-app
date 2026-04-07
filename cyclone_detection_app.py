@@ -794,7 +794,7 @@ if st.session_state.page == "result":
 
         if boxes:
             indo, eng = interpret_boxes(
-                st.session_state.boxes,
+                result["boxes"],
                 result["overlay"].shape,
                 st.session_state.get("selected_date", None)
             )
@@ -1215,81 +1215,58 @@ else:
     """
 
     st.markdown(html_content, unsafe_allow_html=True)
-    # ── Input Section ──
-    st.markdown('<div class="section-title">Start Detection</div>', unsafe_allow_html=True)
 
-    col_center = st.columns([1, 2, 1])[1]
+    # ══════════════════════════════════════
+    # HOME PAGE: INPUT SECTION
+    # ══════════════════════════════════════
 
-    with col_center:
-        with st.container():
+    st.markdown('<div class="section-title">Upload & Analyze</div>', unsafe_allow_html=True)
 
-            st.markdown('<div class="input-label"> Satellite Image (PNG)</div>', unsafe_allow_html=True)
-            # uploaded = st.file_uploader(
-            #     "Upload PNG image",
-            #     type=["png"],
-            #     label_visibility="collapsed",
-            #     key="main_uploader"
-            # )
-            # st.session_state.uploaded = st.file_uploader(
-            #     "Upload PNG image",
-            #     type=["png"],
-            #     label_visibility="collapsed",
-            #     key="main_uploader"
-            # )
+    col1, col2 = st.columns([2, 1])
 
-            # uploaded = st.file_uploader(
-            #     "Upload PNG image",
-            #     type=["png"],
-            #     label_visibility="collapsed",
-            #     key="main_uploader"
-            # )
-            uploaded_file = st.file_uploader(
-                "Upload PNG image",
-                type=["png"],
-                key="uploader"
-            )
+    with col1:
+        st.markdown("""
+        <div class="input-card-wrapper">
+            <div class="input-label">📡 Upload Satellite Image</div>
+        </div>
+        """, unsafe_allow_html=True)
 
-            # 🔥 SIMPAN SEKALI DAN AMAN
-            if uploaded_file is not None:
-                file_bytes = uploaded_file.getvalue()   # ⬅️ BUKAN read()
+        uploaded_file = st.file_uploader(
+            "Choose a satellite image (JPG, PNG)",
+            type=["jpg", "jpeg", "png"],
+            label_visibility="collapsed"
+        )
 
-                if file_bytes:  # pastikan tidak kosong
-                    st.session_state.uploaded_bytes = file_bytes
+        if uploaded_file is not None:
+            st.session_state.uploaded_bytes = uploaded_file.read()
+            st.success(f"✅ Image loaded: {uploaded_file.name}")
 
-            st.markdown('<div class="input-label"> Capture Date</div>', unsafe_allow_html=True)
-            selected_date = st.datetime_input(
-                "Select date",
-                value=datetime.now(),
-                label_visibility="collapsed",
-                key="date_input"
-            )
+    with col2:
+        st.markdown("""
+        <div class="input-card-wrapper">
+            <div class="input-label">📅 Observation Date</div>
+        </div>
+        """, unsafe_allow_html=True)
 
-            st.session_state.selected_date = selected_date
+        selected_date = st.date_input(
+            "Select date",
+            value=date.today(),
+            label_visibility="collapsed"
+        )
+        st.session_state.selected_date = selected_date
 
-            st.markdown("<br>", unsafe_allow_html=True)
-                       
-            st.write("SESSION:", "OK" if st.session_state.get("uploaded_bytes") else None)
-            st.write("BYTES:", type(st.session_state.uploaded_bytes))
+    # ══════════════════════════════════════
+    # DETECT BUTTON
+    # ══════════════════════════════════════
 
-            # 🔥 FIX BUTTON → TRIGGER LOADING
-            if st.button(" Detect Cyclone"):
-                if st.session_state.uploaded_bytes is None:
-                    st.error("Please upload an image first!")
-                    st.stop()
+    st.markdown("<div style='height:20px'></div>", unsafe_allow_html=True)
 
-                st.session_state.page = "loading"
-                st.rerun()
+    if st.button("🔍 Detect Cyclone", use_container_width=True):
+        if st.session_state.uploaded_bytes is None:
+            st.error("❌ Please upload an image first")
+        else:
+            st.session_state.page = "loading"
+            st.rerun()
 
     st.markdown("<div style='height:80px'></div>", unsafe_allow_html=True)
     set_footer()
-
-
-# st.markdown("""
-# <div class="footer">
-#     Tropical Cyclone Detection System  
-#     <br>
-#     <span style="font-size:0.75rem;color:#64748B;">
-#         Developed by Andini Nareswari Rifaat
-#     </span>
-# </div>
-# """, unsafe_allow_html=True)
