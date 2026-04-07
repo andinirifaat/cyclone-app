@@ -664,8 +664,8 @@ def set_footer():
 # ── State ──
 if "page" not in st.session_state:
     st.session_state.page = "home"
-if "uploaded" not in st.session_state:
-    st.session_state.uploaded = None
+# if "uploaded" not in st.session_state:
+#     st.session_state.uploaded = None
 if "loading" not in st.session_state:
     st.session_state.loading = False
 if "processing" not in st.session_state:
@@ -794,12 +794,12 @@ if st.session_state.page == "result":
         """, unsafe_allow_html=True)
 
     with col2:
-        boxes = st.session_state.get("boxes", [])
+        boxes = result["boxes"]
 
         if boxes:
             indo, eng = interpret_boxes(
                 st.session_state.boxes,
-                st.session_state.result_overlay.shape,
+                result["overlay"].shape,
                 st.session_state.get("selected_date", None)
             )
 
@@ -1258,11 +1258,11 @@ else:
                 st.session_state.uploaded_bytes = uploaded_file.read()
 
             # status
-            if st.session_state.get("uploaded_bytes") is not None:
-                st.success("File detected")
+            has_file = st.session_state.get("uploaded_bytes") is not None
+            if has_file:
+                st.success("File detected ✅")
             else:
-                st.error("File NOT detected")
-            st.markdown("<br>", unsafe_allow_html=True)
+                st.error("File NOT detected ❌")
 
             st.markdown('<div class="input-label"> Capture Date</div>', unsafe_allow_html=True)
             selected_date = st.datetime_input(
@@ -1275,13 +1275,9 @@ else:
             st.session_state.selected_date = selected_date
 
             st.markdown("<br>", unsafe_allow_html=True)
-            
-            if st.session_state.uploaded_bytes is not None:
-                st.success("File detected")
-            else:
-                st.error("File NOT detected")
-            
+                       
             st.write("SESSION:", "OK" if st.session_state.get("uploaded_bytes") else None)
+            st.write("BYTES:", type(st.session_state.uploaded_bytes))
 
             # 🔥 FIX BUTTON → TRIGGER LOADING
             if st.button(" Detect Cyclone"):
