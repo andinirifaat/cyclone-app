@@ -711,6 +711,8 @@ if st.session_state.page == "result":
     if st.button("← Back to Home"):
         st.session_state.page = "home"
         st.session_state.result = None
+        st.session_state.uploaded_bytes = None
+        st.session_state.uploaded_filename = None
         st.rerun()
 
     # Image tabs
@@ -934,72 +936,72 @@ else:
             with open(lottie_path, "r") as f:
                 lottie_json = f.read()
 
-            # components.html(f"""
-            # <div style="
-            #     background:white;
-            #     border-radius:18px;
-            #     padding:18px;
-            #     border:1px solid #E0F2FE;
-            #     text-align:center;
-            #     transition: all 0.25s ease;
-            # "
-            # onmouseover="
-            #     this.style.transform='translateY(-6px)';
-            #     this.style.boxShadow='0 0 30px rgba(56,189,248,0.7)';
-            # "
-            # onmouseout="
-            #     this.style.transform='none';
-            #     this.style.boxShadow='none';
-            # "
-            # >
+            components.html(f"""
+            <div style="
+                background:white;
+                border-radius:18px;
+                padding:18px;
+                border:1px solid #E0F2FE;
+                text-align:center;
+                transition: all 0.25s ease;
+            "
+            onmouseover="
+                this.style.transform='translateY(-6px)';
+                this.style.boxShadow='0 0 30px rgba(56,189,248,0.7)';
+            "
+            onmouseout="
+                this.style.transform='none';
+                this.style.boxShadow='none';
+            "
+            >
 
-            #     <div style="
-            #         width:32px;height:32px;
-            #         border-radius:50%;
-            #         background:linear-gradient(135deg,#0284C7,#38BDF8);
-            #         color:white;
-            #         font-weight:bold;
-            #         display:flex;
-            #         align-items:center;
-            #         justify-content:center;
-            #         font-size:12px;
-            #         margin:0 auto 10px auto;
-            #     ">
-            #         {num}
-            #     </div>
+                <div style="
+                    width:32px;height:32px;
+                    border-radius:50%;
+                    background:linear-gradient(135deg,#0284C7,#38BDF8);
+                    color:white;
+                    font-weight:bold;
+                    display:flex;
+                    align-items:center;
+                    justify-content:center;
+                    font-size:12px;
+                    margin:0 auto 10px auto;
+                ">
+                    {num}
+                </div>
 
-            #     <div style="
-            #         font-weight:700;
-            #         font-size:18px;
-            #         color:#0F2A44;
-            #         margin-bottom:10px;
-            #     ">
-            #         {title}
-            #     </div>
+                <div style="
+                    font-weight:700;
+                    font-size:18px;
+                    color:#0F2A44;
+                    margin-bottom:10px;
+                ">
+                    {title}
+                </div>
 
-            #     <div id="lottie-{key}" style="height:110px;"></div>
+                <div id="lottie-{key}" style="height:110px;"></div>
 
-            #     <div style="
-            #         font-size:14px;
-            #         color:#64748B;
-            #         margin-top:10px;
-            #     ">
-            #         {desc}
-            #     </div>
+                <div style="
+                    font-size:14px;
+                    color:#64748B;
+                    margin-top:10px;
+                ">
+                    {desc}
+                </div>
 
-            # </div>
+            </div>
 
-            # <script src="https://unpkg.com/lottie-web@5.10.2/build/player/lottie.min.js"></script>
-            # <script>
-            # lottie.loadAnimation({{
-            #     container: document.getElementById("lottie-{key}"),
-            #     renderer: 'svg',
-            #     loop: true,
-            #     autoplay: true,
-            #     animationData: {lottie_json}
-            # }});
-            # </script>
-            # """, height=300)
+            <script src="https://unpkg.com/lottie-web@5.10.2/build/player/lottie.min.js"></script>
+            <script>
+            lottie.loadAnimation({{
+                container: document.getElementById("lottie-{key}"),
+                renderer: 'svg',
+                loop: true,
+                autoplay: true,
+                animationData: {lottie_json}
+            }});
+            </script>
+            """, height=300)
 
             # ===== POPOVER =====
             with st.popover("Details", width="stretch"):
@@ -1215,58 +1217,88 @@ else:
     """
 
     st.markdown(html_content, unsafe_allow_html=True)
+    # ── Input Section ──
+    st.markdown('<div class="section-title">Start Detection</div>', unsafe_allow_html=True)
 
-    # ══════════════════════════════════════
-    # HOME PAGE: INPUT SECTION
-    # ══════════════════════════════════════
+    col_center = st.columns([1, 2, 1])[1]
 
-    st.markdown('<div class="section-title">Upload & Analyze</div>', unsafe_allow_html=True)
+    with col_center:
+        with st.container():
 
-    col1, col2 = st.columns([2, 1])
+            st.markdown('<div class="input-label"> Satellite Image (PNG)</div>', unsafe_allow_html=True)
+            # uploaded = st.file_uploader(
+            #     "Upload PNG image",
+            #     type=["png"],
+            #     label_visibility="collapsed",
+            #     key="main_uploader"
+            # )
+            # st.session_state.uploaded = st.file_uploader(
+            #     "Upload PNG image",
+            #     type=["png"],
+            #     label_visibility="collapsed",
+            #     key="main_uploader"
+            # )
 
-    with col1:
-        st.markdown("""
-        <div class="input-card-wrapper">
-            <div class="input-label">📡 Upload Satellite Image</div>
-        </div>
-        """, unsafe_allow_html=True)
+            # uploaded = st.file_uploader(
+            #     "Upload PNG image",
+            #     type=["png"],
+            #     label_visibility="collapsed",
+            #     key="main_uploader"
+            # )
+            uploaded_file = st.file_uploader(
+                "Upload PNG image",
+                type=["png"],
+                key="uploader"
+            )
 
-        uploaded_file = st.file_uploader(
-            "Choose a satellite image (JPG, PNG)",
-            type=["jpg", "jpeg", "png"],
-            label_visibility="collapsed"
-        )
+            # 🔥 SIMPAN SEKALI DAN AMAN
+            if uploaded_file is not None:
+                st.session_state.uploaded_bytes = uploaded_file.getvalue()
+                st.session_state.uploaded_filename = uploaded_file.name
+            
+ 
+            # status
+            has_file = st.session_state.get("uploaded_bytes") is not None
+            if has_file:
+                fname = st.session_state.get("uploaded_filename", "image.png")
+                st.success(f"✅ File terdeteksi: **{fname}**")
+            else:
+                st.error("File NOT detected - Please upload an image")
 
-        if uploaded_file is not None:
-            st.session_state.uploaded_bytes = uploaded_file.read()
-            st.success(f"✅ Image loaded: {uploaded_file.name}")
+            st.markdown('<div class="input-label"> Capture Date</div>', unsafe_allow_html=True)
+            selected_date = st.datetime_input(
+                "Select date",
+                value=datetime.now(),
+                label_visibility="collapsed",
+                key="date_input"
+            )
 
-    with col2:
-        st.markdown("""
-        <div class="input-card-wrapper">
-            <div class="input-label">📅 Observation Date</div>
-        </div>
-        """, unsafe_allow_html=True)
+            st.session_state.selected_date = selected_date
 
-        selected_date = st.date_input(
-            "Select date",
-            value=date.today(),
-            label_visibility="collapsed"
-        )
-        st.session_state.selected_date = selected_date
+            st.markdown("<br>", unsafe_allow_html=True)
+                       
+            st.write("SESSION:", "OK" if st.session_state.get("uploaded_bytes") else None)
+            st.write("BYTES:", type(st.session_state.uploaded_bytes))
 
-    # ══════════════════════════════════════
-    # DETECT BUTTON
-    # ══════════════════════════════════════
+            # 🔥 FIX BUTTON → TRIGGER LOADING
+            if st.button(" Detect Cyclone"):
+                if st.session_state.uploaded_bytes is None:
+                    st.error("Please upload an image first!")
+                    st.stop()
 
-    st.markdown("<div style='height:20px'></div>", unsafe_allow_html=True)
-
-    if st.button("🔍 Detect Cyclone", use_container_width=True):
-        if st.session_state.uploaded_bytes is None:
-            st.error("❌ Please upload an image first")
-        else:
-            st.session_state.page = "loading"
-            st.rerun()
+                st.session_state.page = "loading"
+                st.rerun()
 
     st.markdown("<div style='height:80px'></div>", unsafe_allow_html=True)
     set_footer()
+
+
+# st.markdown("""
+# <div class="footer">
+#     Tropical Cyclone Detection System  
+#     <br>
+#     <span style="font-size:0.75rem;color:#64748B;">
+#         Developed by Andini Nareswari Rifaat
+#     </span>
+# </div>
+# """, unsafe_allow_html=True)
