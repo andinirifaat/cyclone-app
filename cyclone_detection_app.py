@@ -698,7 +698,7 @@ if st.session_state.page == "loading":
 # ══════════════════════════════════════
 # PAGE: RESULT
 # ══════════════════════════════════════
-if st.session_state.page == "result":
+elif st.session_state.page == "result":
     result = st.session_state.result
     # Header
     st.markdown("""
@@ -845,451 +845,451 @@ if st.session_state.page == "result":
 # ══════════════════════════════════════
 # PAGE: HOME
 # ══════════════════════════════════════
-else:
-    # Hero
-    st.markdown("""
-    <div class="hero-section">
-        <div class="hero-badge"> AI-Powered Meteorological Analysis</div>
-        <div class="hero-title">AI-Based Tropical Cyclone<br><span>Detection System</span></div>
-        <div class="hero-sub">
-            Leveraging U-Net deep learning segmentation and LLM-powered interpretation to detect
-            and analyze tropical cyclones from satellite imagery with precision and clarity.
-        </div>
+
+# Hero
+st.markdown("""
+<div class="hero-section">
+    <div class="hero-badge"> AI-Powered Meteorological Analysis</div>
+    <div class="hero-title">AI-Based Tropical Cyclone<br><span>Detection System</span></div>
+    <div class="hero-sub">
+        Leveraging U-Net deep learning segmentation and LLM-powered interpretation to detect
+        and analyze tropical cyclones from satellite imagery with precision and clarity.
     </div>
-    """, unsafe_allow_html=True)
+</div>
+""", unsafe_allow_html=True)
 
 
-    # Info cards
-    st.markdown("""
-    <style>
+# Info cards
+st.markdown("""
+<style>
 
-    /* biar card keliatan menyatu */
-    .step-card {
-        background: #ffffff;
-        border-radius: 16px;
-        padding: 16px;
-        border: 1px solid #E0F2FE;
-        margin-bottom: 8px;
-    }
+/* biar card keliatan menyatu */
+.step-card {
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 16px;
+    border: 1px solid #E0F2FE;
+    margin-bottom: 8px;
+}
 
-    /* hover effect */
-    .step-card:hover {
-        transform: translateY(-4px);
-        box-shadow: 0 8px 24px rgba(2,132,199,0.2);
-    }
+/* hover effect */
+.step-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(2,132,199,0.2);
+}
 
-    /* number bulat */
-    .step-num {
-        width: 32px;
-        height: 32px;
-        border-radius: 50%;
-        background: linear-gradient(135deg, #0284C7, #38BDF8);
-        color: white;
-        font-weight: 700;
-        font-size: 0.75rem;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin-bottom: 8px;
-    }
+/* number bulat */
+.step-num {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #0284C7, #38BDF8);
+    color: white;
+    font-weight: 700;
+    font-size: 0.75rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 8px;
+}
 
-    /* title */
-    .step-title {
-        font-weight: 700;
-        font-size: 0.95rem;
-        color: #0F2A44;
-    }
+/* title */
+.step-title {
+    font-weight: 700;
+    font-size: 0.95rem;
+    color: #0F2A44;
+}
 
-    </style>
-    """, unsafe_allow_html=True)
-    
-    st.markdown('<div class="section-title">Understanding the System</div>', unsafe_allow_html=True)
+</style>
+""", unsafe_allow_html=True)
 
-    cards = [
-    ("01", "What is a Tropical Cyclone?", "cyclone",
-     "A large rotating storm system formed over warm oceans...",
-     os.path.join(BASE_DIR, "assets", "1_cyclone.json")),
+st.markdown('<div class="section-title">Understanding the System</div>', unsafe_allow_html=True)
 
-    ("02", "Pseudo-Mask Generator", "dvorak",
-     "Uses Dvorak technique to generate pseudo labels...",
-     os.path.join(BASE_DIR, "assets", "2_generator.json")),
+cards = [
+("01", "What is a Tropical Cyclone?", "cyclone",
+    "A large rotating storm system formed over warm oceans...",
+    os.path.join(BASE_DIR, "assets", "1_cyclone.json")),
 
-    ("03", "Deep Learning Model", "deeplab",
-     "DeepLabV3+ for multi-class segmentation...",
-     os.path.join(BASE_DIR, "assets", "3_AI.json")),
+("02", "Pseudo-Mask Generator", "dvorak",
+    "Uses Dvorak technique to generate pseudo labels...",
+    os.path.join(BASE_DIR, "assets", "2_generator.json")),
 
-    ("04", "Structural Localization", "localization",
-     "Detect cyclone core and structure...",
-     os.path.join(BASE_DIR, "assets", "4_temporal.json")),
+("03", "Deep Learning Model", "deeplab",
+    "DeepLabV3+ for multi-class segmentation...",
+    os.path.join(BASE_DIR, "assets", "3_AI.json")),
 
-    ("05", "LLM Interpretation", "llm",
-     "Generate human-readable insights...",
-     os.path.join(BASE_DIR, "assets", "5_Chatbot.json")),
-    ]
+("04", "Structural Localization", "localization",
+    "Detect cyclone core and structure...",
+    os.path.join(BASE_DIR, "assets", "4_temporal.json")),
 
-    cols = st.columns(5)
+("05", "LLM Interpretation", "llm",
+    "Generate human-readable insights...",
+    os.path.join(BASE_DIR, "assets", "5_Chatbot.json")),
+]
 
-    for col, (num, title, key, desc, lottie_path) in zip(cols, cards):
-        with col:
+cols = st.columns(5)
 
-            # ===== CARD VISUAL =====
-            with open(lottie_path, "r") as f:
-                lottie_json = f.read()
+for col, (num, title, key, desc, lottie_path) in zip(cols, cards):
+    with col:
 
-            components.html(f"""
+        # ===== CARD VISUAL =====
+        with open(lottie_path, "r") as f:
+            lottie_json = f.read()
+
+        components.html(f"""
+        <div style="
+            background:white;
+            border-radius:18px;
+            padding:18px;
+            border:1px solid #E0F2FE;
+            text-align:center;
+            transition: all 0.25s ease;
+        "
+        onmouseover="
+            this.style.transform='translateY(-6px)';
+            this.style.boxShadow='0 0 30px rgba(56,189,248,0.7)';
+        "
+        onmouseout="
+            this.style.transform='none';
+            this.style.boxShadow='none';
+        "
+        >
+
             <div style="
-                background:white;
-                border-radius:18px;
-                padding:18px;
-                border:1px solid #E0F2FE;
-                text-align:center;
-                transition: all 0.25s ease;
-            "
-            onmouseover="
-                this.style.transform='translateY(-6px)';
-                this.style.boxShadow='0 0 30px rgba(56,189,248,0.7)';
-            "
-            onmouseout="
-                this.style.transform='none';
-                this.style.boxShadow='none';
-            "
-            >
-
-                <div style="
-                    width:32px;height:32px;
-                    border-radius:50%;
-                    background:linear-gradient(135deg,#0284C7,#38BDF8);
-                    color:white;
-                    font-weight:bold;
-                    display:flex;
-                    align-items:center;
-                    justify-content:center;
-                    font-size:12px;
-                    margin:0 auto 10px auto;
-                ">
-                    {num}
-                </div>
-
-                <div style="
-                    font-weight:700;
-                    font-size:18px;
-                    color:#0F2A44;
-                    margin-bottom:10px;
-                ">
-                    {title}
-                </div>
-
-                <div id="lottie-{key}" style="height:110px;"></div>
-
-                <div style="
-                    font-size:14px;
-                    color:#64748B;
-                    margin-top:10px;
-                ">
-                    {desc}
-                </div>
-
+                width:32px;height:32px;
+                border-radius:50%;
+                background:linear-gradient(135deg,#0284C7,#38BDF8);
+                color:white;
+                font-weight:bold;
+                display:flex;
+                align-items:center;
+                justify-content:center;
+                font-size:12px;
+                margin:0 auto 10px auto;
+            ">
+                {num}
             </div>
 
-            <script src="https://unpkg.com/lottie-web@5.10.2/build/player/lottie.min.js"></script>
-            <script>
-            lottie.loadAnimation({{
-                container: document.getElementById("lottie-{key}"),
-                renderer: 'svg',
-                loop: true,
-                autoplay: true,
-                animationData: {lottie_json}
-            }});
-            </script>
-            """, height=300)
+            <div style="
+                font-weight:700;
+                font-size:18px;
+                color:#0F2A44;
+                margin-bottom:10px;
+            ">
+                {title}
+            </div>
 
-            # ===== POPOVER =====
-            with st.popover("Details", width="stretch"):
+            <div id="lottie-{key}" style="height:110px;"></div>
 
-                # ===== CYCLONE =====
-                if key == "cyclone":
+            <div style="
+                font-size:14px;
+                color:#64748B;
+                margin-top:10px;
+            ">
+                {desc}
+            </div>
 
-                    st.markdown("### What is a Tropical Cyclone?")
+        </div>
 
-                    st.image(
-                        os.path.join(BASE_DIR, "assets", "siklon_tropis.jpg"),
-                        width="stretch"
-                    )
+        <script src="https://unpkg.com/lottie-web@5.10.2/build/player/lottie.min.js"></script>
+        <script>
+        lottie.loadAnimation({{
+            container: document.getElementById("lottie-{key}"),
+            renderer: 'svg',
+            loop: true,
+            autoplay: true,
+            animationData: {lottie_json}
+        }});
+        </script>
+        """, height=300)
 
-                    st.markdown("""
-                    Tropical cyclones are large-scale atmospheric systems that develop over warm ocean waters,
-                    characterized by a low-pressure center, strong rotating winds, and organized convective cloud structures.
-                    """)
+        # ===== POPOVER =====
+        with st.popover("Details", width="stretch"):
 
-                    st.markdown("#### Formation Conditions")
-                    st.markdown("""
-                    - High sea surface temperatures  
-                    - High humidity in the lower and mid-troposphere  
-                    - Sufficient Coriolis force  
-                    - Low vertical wind shear  
-                    - Atmospheric instability  
-                    """)
+            # ===== CYCLONE =====
+            if key == "cyclone":
 
-                    st.markdown("---")
+                st.markdown("### What is a Tropical Cyclone?")
 
-                    st.image(
-                        os.path.join(BASE_DIR, "assets", "dampak_ST.jpeg"),
-                        width="stretch"
-                    )
+                st.image(
+                    os.path.join(BASE_DIR, "assets", "siklon_tropis.jpg"),
+                    width="stretch"
+                )
 
-                    st.markdown("#### Impacts : ")
-                    st.markdown("""
-                    Tropical cyclones can trigger floods, landslides, storm surges, extreme winds, and rough seas,
-                    causing significant economic losses and human casualties.
-                    """)
+                st.markdown("""
+                Tropical cyclones are large-scale atmospheric systems that develop over warm ocean waters,
+                characterized by a low-pressure center, strong rotating winds, and organized convective cloud structures.
+                """)
 
-                # ===== DVORAK =====
-                elif key == "dvorak":
+                st.markdown("#### Formation Conditions")
+                st.markdown("""
+                - High sea surface temperatures  
+                - High humidity in the lower and mid-troposphere  
+                - Sufficient Coriolis force  
+                - Low vertical wind shear  
+                - Atmospheric instability  
+                """)
 
-                    st.markdown("### Pseudo-Mask Generator with Dvorak Technique")
+                st.markdown("---")
 
-                    st.image(
-                        os.path.join(BASE_DIR, "assets", "dvorak.png"),
-                        width="stretch"
-                    )
+                st.image(
+                    os.path.join(BASE_DIR, "assets", "dampak_ST.jpeg"),
+                    width="stretch"
+                )
 
-                    st.markdown("""
-                    The Dvorak technique estimates cyclone intensity using satellite imagery
-                    based on cloud patterns such as curved bands, CDO, and eye structures.
-                    """)
+                st.markdown("#### Impacts : ")
+                st.markdown("""
+                Tropical cyclones can trigger floods, landslides, storm surges, extreme winds, and rough seas,
+                causing significant economic losses and human casualties.
+                """)
 
-                    st.markdown("#### Processing")
-                    st.markdown("""
-                    - Image cropping  
-                    - BGR → HSV transformation  
-                    - Structural thresholding  
-                    """)
+            # ===== DVORAK =====
+            elif key == "dvorak":
 
-                    st.markdown("#### Parameters")
-                    st.markdown("""
-                    - Convective core area  
-                    - Active sector ratio  
-                    - Band distribution  
-                    - Symmetry ratio  
-                    """)
+                st.markdown("### Pseudo-Mask Generator with Dvorak Technique")
 
-                    st.markdown("""
-                    Output: multi-class pseudomask (Red Core, Impacted Area, DCC, Background)
-                    """)
+                st.image(
+                    os.path.join(BASE_DIR, "assets", "dvorak.png"),
+                    width="stretch"
+                )
 
-                # ===== DEEPLAB =====
-                elif key == "deeplab":
-                    st.markdown("### DeepLabV3+ Model")
+                st.markdown("""
+                The Dvorak technique estimates cyclone intensity using satellite imagery
+                based on cloud patterns such as curved bands, CDO, and eye structures.
+                """)
 
-                    st.markdown("""
-                    DeepLabV3+ is a semantic segmentation model that utilizes atrous convolution 
-                    and an encoder–decoder structure to capture multi-scale features.
-                    """)
+                st.markdown("#### Processing")
+                st.markdown("""
+                - Image cropping  
+                - BGR → HSV transformation  
+                - Structural thresholding  
+                """)
 
-                    # ===== TABLE DATA =====
-                    data = {
-                        "Class": ["Background", "Red Core", "Impacted Area", "DCC", "Mean"],
-                        "Detection Accuracy": ["-", "0.836", "0.832", "0.603", "-"],
-                        "Precision (Cyclone)": [0.9956, 0.6515, 0.5570, 0.4054, 0.6524],
-                        "Recall (Cyclone)": [0.9940, 0.8149, 0.6422, 0.0485, 0.6249],
-                        "F1-score (Cyclone)": [0.9948, 0.7241, 0.5966, 0.0866, 0.6005],
-                        "IoU (Cyclone)": [0.9896, 0.5675, 0.4251, 0.0452, 0.5069],
-                    }
+                st.markdown("#### Parameters")
+                st.markdown("""
+                - Convective core area  
+                - Active sector ratio  
+                - Band distribution  
+                - Symmetry ratio  
+                """)
 
-                    df = pd.DataFrame(data)
-                    df = df.astype(str)
-                    # ===== TABLE VISUAL (ANTI PYARROW) =====
-                 
-                    fig, ax = plt.subplots(figsize=(12, 2))  # 🔥 lebih lebar & pendek
-                    ax.axis('tight')   # 🔥 penting!
-                    ax.axis('off')
+                st.markdown("""
+                Output: multi-class pseudomask (Red Core, Impacted Area, DCC, Background)
+                """)
 
-                    table = ax.table(
-                        cellText=df.values.tolist(),   # 🔥 pastikan list
-                        colLabels=df.columns.tolist(),
-                        loc='center'
-                    )
+            # ===== DEEPLAB =====
+            elif key == "deeplab":
+                st.markdown("### DeepLabV3+ Model")
 
-                    table.auto_set_font_size(False)
-                    table.set_fontsize(10)
-                    table.scale(1, 1.8)
+                st.markdown("""
+                DeepLabV3+ is a semantic segmentation model that utilizes atrous convolution 
+                and an encoder–decoder structure to capture multi-scale features.
+                """)
 
-                    plt.tight_layout()  # 🔥 WAJIB
+                # ===== TABLE DATA =====
+                data = {
+                    "Class": ["Background", "Red Core", "Impacted Area", "DCC", "Mean"],
+                    "Detection Accuracy": ["-", "0.836", "0.832", "0.603", "-"],
+                    "Precision (Cyclone)": [0.9956, 0.6515, 0.5570, 0.4054, 0.6524],
+                    "Recall (Cyclone)": [0.9940, 0.8149, 0.6422, 0.0485, 0.6249],
+                    "F1-score (Cyclone)": [0.9948, 0.7241, 0.5966, 0.0866, 0.6005],
+                    "IoU (Cyclone)": [0.9896, 0.5675, 0.4251, 0.0452, 0.5069],
+                }
 
-                    st.pyplot(fig)
+                df = pd.DataFrame(data)
+                df = df.astype(str)
+                # ===== TABLE VISUAL (ANTI PYARROW) =====
+                
+                fig, ax = plt.subplots(figsize=(12, 2))  # 🔥 lebih lebar & pendek
+                ax.axis('tight')   # 🔥 penting!
+                ax.axis('off')
 
-                    st.markdown("""
-                    ### Analysis
+                table = ax.table(
+                    cellText=df.values.tolist(),   # 🔥 pastikan list
+                    colLabels=df.columns.tolist(),
+                    loc='center'
+                )
 
-                    Strong performance at detecting:
-                    - Red Core
-                    - Impacted Area  
+                table.auto_set_font_size(False)
+                table.set_fontsize(10)
+                table.scale(1, 1.8)
 
-                    Weak performance at detecting:
-                    - DCC (small, scattered objects)
+                plt.tight_layout()  # 🔥 WAJIB
 
-                    The model performs well in detecting main cyclone structures but struggles 
-                    with small-scale patterns and clear-sky false positives.
-                    """)
+                st.pyplot(fig)
 
-                # ===== LOCALIZATION =====
-                elif key == "localization":
+                st.markdown("""
+                ### Analysis
 
-                    st.markdown("### Structural Localization")
+                Strong performance at detecting:
+                - Red Core
+                - Impacted Area  
 
-                    st.image(
-                        os.path.join(BASE_DIR, "assets", "localization.png"),
-                        width="stretch"
-                    )
+                Weak performance at detecting:
+                - DCC (small, scattered objects)
 
-                    st.markdown("""
-                    Segmentation results are converted into bounding boxes
-                    representing cyclone structures.
-                    """)
+                The model performs well in detecting main cyclone structures but struggles 
+                with small-scale patterns and clear-sky false positives.
+                """)
 
-                    st.markdown("""
-                    - Red Core → cyclone center  
-                    - Impacted Area → surrounding region  
-                    - DCC → unstructured clouds  
-                    """)
+            # ===== LOCALIZATION =====
+            elif key == "localization":
 
-                    st.markdown("""
-                    Filtering and convex hull improve spatial accuracy.
-                    """)
+                st.markdown("### Structural Localization")
 
-                # ===== LLM =====
-                elif key == "llm":
+                st.image(
+                    os.path.join(BASE_DIR, "assets", "localization.png"),
+                    width="stretch"
+                )
 
-                    st.markdown("### LLM Interpretation")
+                st.markdown("""
+                Segmentation results are converted into bounding boxes
+                representing cyclone structures.
+                """)
 
-                    st.markdown("""
-                    The LLM generates structured summaries from bounding box outputs. LLM using model from Open Router with failover between google/gemma-3-4b-it and qwen/qwen3.6-plus free tiers. For last option model wouldd be random pick from openrouter/free.
-                    """)
+                st.markdown("""
+                - Red Core → cyclone center  
+                - Impacted Area → surrounding region  
+                - DCC → unstructured clouds  
+                """)
 
-                    st.markdown("""
-                    Input:
-                    - Number of detections  
-                    - Spatial distribution  
-                    - Class types  
-                    """)
+                st.markdown("""
+                Filtering and convex hull improve spatial accuracy.
+                """)
 
-                    st.markdown("""
-                    Output:
-                    - Weather condition  
-                    - Cyclone potential  
-                    - Risk analysis  
-                    """)
+            # ===== LLM =====
+            elif key == "llm":
 
-                    st.markdown("""
-                    Notes : LLM acts only as narrator and All logic from CV pipeline  
-                    """)
+                st.markdown("### LLM Interpretation")
+
+                st.markdown("""
+                The LLM generates structured summaries from bounding box outputs. LLM using model from Open Router with failover between google/gemma-3-4b-it and qwen/qwen3.6-plus free tiers. For last option model wouldd be random pick from openrouter/free.
+                """)
+
+                st.markdown("""
+                Input:
+                - Number of detections  
+                - Spatial distribution  
+                - Class types  
+                """)
+
+                st.markdown("""
+                Output:
+                - Weather condition  
+                - Cyclone potential  
+                - Risk analysis  
+                """)
+
+                st.markdown("""
+                Notes : LLM acts only as narrator and All logic from CV pipeline  
+                """)
+
+        
 
             
+# How to use
+st.markdown('<div class="section-title">How to Use</div>', unsafe_allow_html=True)
 
-                
-    # How to use
-    st.markdown('<div class="section-title">How to Use</div>', unsafe_allow_html=True)
+steps = [
+    ("Upload Satellite Image", "Select a PNG satellite image of the target region for analysis."),
+    ("Select Timestamp", "Choose the date corresponding to the satellite capture for validation."),
+    ("Click \"Detect Cyclone\"", "Run the AI model to segment and classify cyclone structures in the image."),
+]
 
-    steps = [
-        ("Upload Satellite Image", "Select a PNG satellite image of the target region for analysis."),
-        ("Select Timestamp", "Choose the date corresponding to the satellite capture for validation."),
-        ("Click \"Detect Cyclone\"", "Run the AI model to segment and classify cyclone structures in the image."),
-    ]
-
-    # Build HTML string (TANPA indent aneh)
-    steps_html = ""
-    for i, (title, desc) in enumerate(steps, 1):
-        steps_html += f"""
-    <div class="step-row">
-        <div class="step-num">{i}</div>
-        <div class="step-text">
-            <h4>{title}</h4>
-            <p>{desc}</p>
-        </div>
+# Build HTML string (TANPA indent aneh)
+steps_html = ""
+for i, (title, desc) in enumerate(steps, 1):
+    steps_html += f"""
+<div class="step-row">
+    <div class="step-num">{i}</div>
+    <div class="step-text">
+        <h4>{title}</h4>
+        <p>{desc}</p>
     </div>
-    """
+</div>
+"""
 
-    # Render dalam SATU block (ini kunci utama)
-    html_content = f"""
-    <div class="white-card" style="max-width:720px;margin:0 auto;">
-    {steps_html}
-    </div>
-    """
+# Render dalam SATU block (ini kunci utama)
+html_content = f"""
+<div class="white-card" style="max-width:720px;margin:0 auto;">
+{steps_html}
+</div>
+"""
 
-    st.markdown(html_content, unsafe_allow_html=True)
-    # ── Input Section ──
-    st.markdown('<div class="section-title">Start Detection</div>', unsafe_allow_html=True)
+st.markdown(html_content, unsafe_allow_html=True)
+# ── Input Section ──
+st.markdown('<div class="section-title">Start Detection</div>', unsafe_allow_html=True)
 
-    col_center = st.columns([1, 2, 1])[1]
+col_center = st.columns([1, 2, 1])[1]
 
-    with col_center:
-        with st.container():
+with col_center:
+    with st.container():
 
-            st.markdown('<div class="input-label"> Satellite Image (PNG)</div>', unsafe_allow_html=True)
-            # uploaded = st.file_uploader(
-            #     "Upload PNG image",
-            #     type=["png"],
-            #     label_visibility="collapsed",
-            #     key="main_uploader"
-            # )
-            # st.session_state.uploaded = st.file_uploader(
-            #     "Upload PNG image",
-            #     type=["png"],
-            #     label_visibility="collapsed",
-            #     key="main_uploader"
-            # )
+        st.markdown('<div class="input-label"> Satellite Image (PNG)</div>', unsafe_allow_html=True)
+        # uploaded = st.file_uploader(
+        #     "Upload PNG image",
+        #     type=["png"],
+        #     label_visibility="collapsed",
+        #     key="main_uploader"
+        # )
+        # st.session_state.uploaded = st.file_uploader(
+        #     "Upload PNG image",
+        #     type=["png"],
+        #     label_visibility="collapsed",
+        #     key="main_uploader"
+        # )
 
-            # uploaded = st.file_uploader(
-            #     "Upload PNG image",
-            #     type=["png"],
-            #     label_visibility="collapsed",
-            #     key="main_uploader"
-            # )
-            uploaded_file = st.file_uploader(
-                "Upload PNG image",
-                type=["png"],
-                key="uploader"
-            )
+        # uploaded = st.file_uploader(
+        #     "Upload PNG image",
+        #     type=["png"],
+        #     label_visibility="collapsed",
+        #     key="main_uploader"
+        # )
+        uploaded_file = st.file_uploader(
+            "Upload PNG image",
+            type=["png"],
+            key="uploader"
+        )
 
-            # 🔥 SIMPAN SETIAP ADA FILE (INI PALING STABIL)
-            if uploaded_file is not None:
-                st.session_state.uploaded_bytes = uploaded_file.getvalue()
-                st.session_state.uploaded_filename = uploaded_file.name
-                
-            # status
-            has_file = st.session_state.get("uploaded_bytes") is not None
-            if has_file:
-                fname = st.session_state.get("uploaded_filename", "image.png")
-                st.success(f"✅ File terdeteksi: **{fname}**")
-            else:
-                st.error("File NOT detected - Please upload an image")
+        # 🔥 SIMPAN SETIAP ADA FILE (INI PALING STABIL)
+        if uploaded_file is not None:
+            st.session_state.uploaded_bytes = uploaded_file.getvalue()
+            st.session_state.uploaded_filename = uploaded_file.name
 
-            st.markdown('<div class="input-label"> Capture Date</div>', unsafe_allow_html=True)
-            selected_date = st.datetime_input(
-                "Select date",
-                value=datetime.now(),
-                label_visibility="collapsed",
-                key="date_input"
-            )
+        # status
+        has_file = st.session_state.get("uploaded_bytes") is not None
+        if has_file:
+            fname = st.session_state.get("uploaded_filename", "image.png")
+            st.success(f"✅ File terdeteksi: **{fname}**")
+        else:
+            st.error("File NOT detected - Please upload an image")
 
-            st.session_state.selected_date = selected_date
+        st.markdown('<div class="input-label"> Capture Date</div>', unsafe_allow_html=True)
+        selected_date = st.datetime_input(
+            "Select date",
+            value=datetime.now(),
+            label_visibility="collapsed",
+            key="date_input"
+        )
 
-            st.markdown("<br>", unsafe_allow_html=True)
-                       
-            st.write("SESSION:", "OK" if st.session_state.get("uploaded_bytes") else None)
-            st.write("BYTES:", type(st.session_state.uploaded_bytes))
+        st.session_state.selected_date = selected_date
 
-            # 🔥 FIX BUTTON → TRIGGER LOADING
-            if st.button(" Detect Cyclone"):
-                if st.session_state.uploaded_bytes is None:
-                    st.error("Please upload an image first!")
-                    st.stop()
+        st.markdown("<br>", unsafe_allow_html=True)
+                    
+        st.write("SESSION:", "OK" if st.session_state.get("uploaded_bytes") else None)
+        st.write("BYTES:", type(st.session_state.uploaded_bytes))
 
-                st.session_state.page = "loading"
-                st.rerun()
+        # 🔥 FIX BUTTON → TRIGGER LOADING
+        if st.button(" Detect Cyclone"):
+            if st.session_state.uploaded_bytes is None:
+                st.error("Please upload an image first!")
+                st.stop()
 
-    st.markdown("<div style='height:80px'></div>", unsafe_allow_html=True)
-    set_footer()
+            st.session_state.page = "loading"
+            st.rerun()
+
+st.markdown("<div style='height:80px'></div>", unsafe_allow_html=True)
+set_footer()
 
 
 # st.markdown("""
