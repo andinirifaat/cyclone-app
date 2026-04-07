@@ -19,6 +19,15 @@ MIN_IMPACT_AREA = 5000
 # LOAD MODEL
 # ====================================
 def load_model():
+    import os
+
+    # Check if model file exists
+    if not os.path.exists(MODEL_PATH):
+        raise FileNotFoundError(
+            f"Model file not found: {MODEL_PATH}\n"
+            f"Please ensure deeplab_mask3_best.pth is in the project root directory."
+        )
+
     model = smp.DeepLabV3Plus(
         encoder_name="resnet34",
         encoder_weights=None,
@@ -26,7 +35,11 @@ def load_model():
         classes=4,
     )
 
-    model.load_state_dict(torch.load(MODEL_PATH, map_location=DEVICE, weights_only=True))
+    try:
+        model.load_state_dict(torch.load(MODEL_PATH, map_location=DEVICE, weights_only=True))
+    except Exception as e:
+        raise RuntimeError(f"Failed to load model weights: {str(e)}")
+
     model.to(DEVICE)
     model.eval()
 
