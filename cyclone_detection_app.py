@@ -28,9 +28,19 @@ st.set_page_config(
 
 @st.cache_resource
 def get_model():
-    return load_model()
+    try:
+        return load_model()
+    except FileNotFoundError as e:
+        st.error(f"Model Error: {str(e)}")
+        st.stop()
+    except Exception as e:
+        st.error(f"Failed to load model: {str(e)}")
+        st.stop()
 
-model = get_model()
+try:
+    model = get_model()
+except Exception:
+    model = None
 
 
 # ── Custom CSS ──
@@ -673,27 +683,37 @@ if "result" not in st.session_state:
 if st.session_state.page == "loading":
     st.markdown("## 🔄 Analyzing Cyclone...")
 
-    # animasi (opsional)
     time.sleep(0.5)
 
-    # ambil bytes → convert ke image
-    image = Image.open(BytesIO(st.session_state.uploaded_bytes)).convert("RGB")
-    img_np = np.array(image)
+    try:
+        # Convert bytes to image
+        image = Image.open(BytesIO(st.session_state.uploaded_bytes)).convert("RGB")
+        img_np = np.array(image)
 
-    # inference
-    mask, boxes, overlay = run_inference(model, img_np)
+        # Run inference
+        if model is None:
+            st.error("Model failed to load. Please check the logs.")
+            st.session_state.page = "home"
+            st.rerun()
 
-    # simpan hasil
-    st.session_state.result = {
-        "image": image,
-        "mask": mask,
-        "boxes": boxes,
-        "overlay": overlay
-    }
+        mask, boxes, overlay = run_inference(model, img_np)
 
-    # pindah ke result
-    st.session_state.page = "result"
-    st.rerun()
+        # Store results
+        st.session_state.result = {
+            "image": image,
+            "mask": mask,
+            "boxes": boxes,
+            "overlay": overlay
+        }
+
+        # Go to result page
+        st.session_state.page = "result"
+        st.rerun()
+
+    except Exception as e:
+        st.error(f"Inference failed: {str(e)}")
+        st.session_state.page = "home"
+        st.rerun()
 
 # ══════════════════════════════════════
 # PAGE: RESULT
