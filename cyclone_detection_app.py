@@ -856,7 +856,7 @@ elif st.session_state.page == "home":
         <div class="hero-badge"> AI-Powered Meteorological Analysis</div>
         <div class="hero-title">AI-Based Tropical Cyclone<br><span>Detection System</span></div>
         <div class="hero-sub">
-            Leveraging U-Net deep learning segmentation and LLM-powered interpretation to detect
+            Leveraging deep learning segmentation with Dvorak Technique heuristics and LLM-powered interpretation to detect
             and analyze tropical cyclones from satellite imagery with precision and clarity.
         </div>
     </div>
@@ -1256,7 +1256,7 @@ elif st.session_state.page == "home":
                 key="uploader"
             )
             # DEBUG (WAJIB SEMENTARA)
-            st.write("UPLOADED FILE:", uploaded_file)
+            #st.write("UPLOADED FILE:", uploaded_file)
 
             if uploaded_file is not None:
                 st.session_state.uploaded_bytes = uploaded_file.getvalue()
@@ -1288,7 +1288,7 @@ elif st.session_state.page == "home":
 
             st.markdown("<br>", unsafe_allow_html=True)
                         
-            st.write("SESSION:", "OK" if st.session_state.get("uploaded_bytes") else None)
+            #st.write("SESSION:", "OK" if st.session_state.get("uploaded_bytes") else None)
             #st.write("BYTES:", st.session_state.get("uploaded_bytes"))
 
             # # 🔥 FIX BUTTON → TRIGGER LOADING
