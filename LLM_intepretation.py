@@ -1,9 +1,9 @@
 import requests
 from collections import Counter
-
 from streamlit import image
+import streamlit as st
 
-OPENROUTER_API_KEY = "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"
+OPENROUTER_API_KEY = st.secrets["OPENROUTER_API_KEY"]
 
 
 # ====================================
