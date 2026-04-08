@@ -3,7 +3,7 @@ from collections import Counter
 
 from streamlit import image
 
-OPENROUTER_API_KEY = "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"
+OPENROUTER_API_KEY = "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"
 
 
 # ====================================
@@ -141,6 +141,7 @@ def ask_llm(prompt):
 
     models = [
         "google/gemma-3-4b-it:free",
+        "openai/gpt-oss-20b:free",
         "qwen/qwen3.6-plus:free",
         "openrouter/auto"
     ]
