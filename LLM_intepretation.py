@@ -2,14 +2,8 @@ import requests
 from collections import Counter
 from streamlit import image
 import streamlit as st
-import os
 
-if "OPENROUTER_API_KEY" in st.secrets:
-    OPENROUTER_API_KEY = st.secrets["OPENROUTER_API_KEY"]
-else:
-    from dotenv import load_dotenv
-    load_dotenv()
-    OPENROUTER_API_KEY = os.getenv("OPENROUTER_API_KEY")
+OPENROUTER_API_KEY = st.secrets["OPENROUTER_API_KEY"]
 
 
 # ====================================
